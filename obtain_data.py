@@ -1,42 +1,50 @@
 from netmiko import ConnectHandler
 from datetime import date
+import csv
 
 today= date.today()
-Date = str(today.strftime("%m_%d_%y"))
+Date = str(today.strftime("%d_%m_%y"))
 
-cisco_iosv = {
-    'device_type': 'cisco_ios',
-    'host':   '192.168.42.56',
-    'username': 'Nsindiso',
-    'password': 'bulawayo',
-    'secret': 'bulawayo',
-}
+class Backup_Configuration:
+    
+    def __init__(self, device_type, host, username,password,secret,hostname):
+        self.hostname = hostname
+        self.device_type = device_type
+        self.host=host
+        self.username= username
+        self.password = password
+        self.secret = secret
 
-cisco_iosxe1 = {
-    'device_type':'cisco_xe',
-    'host': '192.168.42.82',
-    'username': 'Nsindiso',
-    'password': 'bulawayo',
-    'secret':'bulwayo'
-}
+    def get_backup(self):
+        Device = {
+            'device_type': self.device_type,
+            'host':   self.host,
+            'username': self.username,
+            'password': self.password,
+            'secret': self.secret
+        }
 
-cisco_iosxe2 = {
-    'device_type':'cisco_xe',
-    'host': '192.168.42.69',
-    'username': 'Nsindiso',
-    'password': 'bulawayo',
-    'secret':'bulwayo'
-}
+        name = self.hostname  + "_" + Date
+        net_connect = ConnectHandler(**Device)
+        net_connect.enable()
+        output = net_connect.send_command('show running-config')
+        with open(name+".txt", "w") as file:
+            file.write(output) 
+        print(self.hostname + " "+ "configuration has been backed up")
 
-for device in (cisco_iosv, cisco_iosxe1, cisco_iosxe2):
-    name = device['host'] + "_" + Date
-    net_connect = ConnectHandler(**device)
-    net_connect.enable()
-    output = net_connect.send_command('show running-config')
-    with open(name+".txt", "w") as file:
-        file.write(output) 
-    print(device['host'] + " "+ "configuration has been backed up")
-
+if  __name__ == "__main__":
+    
+    with open("host_details.csv") as host_details:
+        host_list = list(csv.reader(host_details))
+        for row in host_list:
+            device_type=row[0]
+            host=row[1]
+            username = row[2] 
+            password = row[3] 
+            secret = row[4]
+            host_name = row[5]
+            backup = Backup_Configuration(device_type, host, username, password, secret, host_name)
+            backup.get_backup()
 
 
 

@@ -1,22 +1,22 @@
 Building configuration...
 
   
-Current configuration : 3280 bytes
+Current configuration : 3231 bytes
 !
-! Last configuration change at 23:51:30 UTC Sat May 29 2021
+! Last configuration change at 23:36:45 UTC Sun May 30 2021
 !
 version 15.6
 service timestamps debug datetime msec
 service timestamps log datetime msec
 no service password-encryption
 !
-hostname Nsindiso
+hostname R1
 !
 boot-start-marker
 boot-end-marker
 !
 !
-enable secret 5 $1$VGWF$Z3id1MENCgwG78wmioJMs0
+enable secret 5 $1$q0c6$hex8HJV84FNq8tJ3AMhlT.
 !
 no aaa new-model
 ethernet lmi ce
@@ -38,7 +38,7 @@ mmi snmp-timeout 180
 !
 !
 !
-ip domain name net.com
+ip domain name bulawayo.net
 ip cef
 no ipv6 cef
 !
@@ -47,7 +47,7 @@ multilink bundle-name authenticated
 !
 !
 !
-username Nsindiso secret 5 $1$UZkz$1BvXEXjnhmbIkKbG4TDqr.
+username Nsindiso secret 5 $1$UUbe$CMrTkQiCVBCwGJT3rvJEw0
 !
 redundancy
 !
@@ -139,9 +139,6 @@ banner login ^C
 line con 0
 line aux 0
 line vty 0 4
- login local
- transport input ssh
-line vty 5 14
  login local
  transport input ssh
 !
