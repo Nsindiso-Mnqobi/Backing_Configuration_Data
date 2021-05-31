@@ -3,11 +3,11 @@ from datetime import date
 import csv
 
 today= date.today()
-Date = str(today.strftime("%d_%m_%y"))
+Date = str(today.strftime("%d_f%m_%y"))
 
 class Backup_Configuration:
     
-    def __init__(self, device_type, host, username,password,secret,hostname):
+    def __init__(self, device_type, hostfa, username,password,secret,hostname):
         self.hostname = hostname
         self.device_type = device_type
         self.host=host
